@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أيمن الشبامي | محاسب محترف</title>
+    
+    <!-- Google Fonts: Cairo & Tajawal -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f172a',    // Slate 900
+                        card: '#1e293b',    // Slate 800
+                        primary: '#f59e0b', // Amber 500 (Gold/Premium look)
+                        primaryHover: '#d97706',
+                        textMain: '#f8fafc',
+                        textMuted: '#94a3b8'
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                        tajawal: ['Tajawal', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Tajawal', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, h5, h6, .nav-link {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b; 
+        }
+
+        /* Glassmorphism */
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to left, #f59e0b, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Blob Background */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.4;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-20px) scale(1.1); }
+        }
+
+        /* Timeline Styles */
+        .timeline-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(245, 158, 11, 0.2);
+            right: 16px; /* For RTL */
+        }
+        @media (min-width: 768px) {
+            .timeline-line {
+                right: 50%;
+                transform: translateX(50%);
+            }
+        }
+    </style>
+</head>
+<body class="antialiased relative">
+
+    <!-- Background Decoration -->
+    <div class="blob bg-primary/20 w-96 h-96 rounded-full top-[-10%] right-[-10%]"></div>
+    <div class="blob bg-blue-900/20 w-96 h-96 rounded-full bottom-[10%] left-[-10%]"></div>
+
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-dark font-bold text-xl">
+                        A
+                    </div>
+                    <span class="font-cairo font-bold text-2xl tracking-wide">أيمن <span class="text-primary">الشبامي</span></span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 space-x-reverse">
+                    <a href="#home" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">الرئيسية</a>
+                    <a href="#about" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">عني</a>
+                    <a href="#skills" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">المهارات</a>
+                    <a href="#experience" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">الخبرات</a>
+                    <a href="#education" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">التعليم</a>
+                </div>
+
+                <!-- Contact Button (Desktop) -->
+                <div class="hidden md:block">
+                    <a href="#contact" class="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary hover:text-dark transition-all duration-300 font-cairo font-bold">
+                        تواصل معي
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-textMain hover:text-primary focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="md:hidden hidden bg-card border-t border-gray-700">
+            <div class="px-4 pt-2 pb-6 space-y-2 text-center">
+                <a href="#home" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">الرئيسية</a>
+                <a href="#about" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">عني</a>
+                <a href="#skills" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">المهارات</a>
+                <a href="#experience" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">الخبرات</a>
+                <a href="#education" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">التعليم</a>
+                <a href="#contact" class="block px-3 py-3 rounded-md text-base font-medium text-primary hover:bg-gray-700 transition">تواصل معي</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="min-h-screen flex items-center justify-center pt-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-12">
+                
+                <!-- Text Content -->
+                <div class="flex-1 text-center md:text-right reveal-right">
+                    <span class="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary text-sm font-bold mb-4 font-cairo border border-primary/20">
+                        مرحباً بك في ملفي الشخصي 👋
+                    </span>
+                    <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight">
+                        أنا <span class="text-gradient">أيمن الشبامي</span>
+                    </h1>
+                    <h2 class="text-2xl md:text-3xl text-textMuted mb-6 font-cairo font-semibold">
+                        محاسب محترف ومسؤول مخازن
+                    </h2>
+                    <p class="text-lg text-textMuted mb-8 max-w-2xl mx-auto md:mx-0 leading-relaxed">
+                        أجمع بين الدقة المحاسبية والإدارة الفعالة للمخزون. أطمح دائماً لتحسين الكفاءة المالية ودعم اتخاذ القرارات الاستراتيجية من خلال تحليل دقيق للبيانات.
+                    </p>
+                    
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                        <a href="#contact" class="px-8 py-3 rounded-full bg-primary text-dark font-bold font-cairo text-lg hover:bg-primaryHover hover:scale-105 transition-all duration-300 shadow-lg shadow-primary/30">
+                            وظفني الآن
+                        </a>
+                        <div class="flex gap-4">
+                            <a href="mailto:abogithalshbamy@gmail.com" class="w-12 h-12 rounded-full border border-gray-600 flex items-center justify-center hover:bg-primary hover:border-primary hover:text-dark transition-all duration-300">
+                                <i class="fas fa-envelope text-xl"></i>
+                            </a>
+                            <a href="https://wa.me/966536330810" target="_blank" class="w-12 h-12 rounded-full border border-gray-600 flex items-center justify-center hover:bg-green-500 hover:border-green-500 hover:text-white transition-all duration-300">
+                                <i class="fab fa-whatsapp text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Abstract Image / Graphic -->
+                <div class="flex-1 relative reveal-left flex justify-center mt-12 md:mt-0">
+                    <div class="relative w-72 h-72 md:w-96 md:h-96">
+                        <!-- Decorative shapes -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-primary to-orange-600 rounded-full blur-2xl opacity-20 animate-pulse"></div>
+                        <div class="absolute inset-4 border-2 border-primary/30 rounded-full border-dashed animate-[spin_10s_linear_infinite]"></div>
+                        
+                        <!-- Main Card -->
+                        <div class="absolute inset-8 bg-card rounded-2xl border border-gray-700 shadow-2xl flex flex-col items-center justify-center overflow-hidden group">
+                            <div class="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors duration-500"></div>
+                            <i class="fas fa-chart-pie text-6xl text-primary mb-4 transform group-hover:scale-110 transition-transform duration-500"></i>
+                            <h3 class="font-cairo font-bold text-2xl text-center">الكفاءة المالية</h3>
+                            <p class="text-textMuted text-sm text-center mt-2 px-4">دقة، تحليل، وإدارة مستودعات متطورة</p>
+                        </div>
+
+                        <!-- Floating Badges -->
+                        <div class="absolute top-10 -right-4 bg-card border border-gray-700 py-2 px-4 rounded-xl shadow-lg flex items-center gap-2 animate-[float_4s_ease-in-out_infinite]">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <span class="font-cairo text-sm font-bold">دقة عالية</span>
+                        </div>
+                        <div class="absolute bottom-10 -left-4 bg-card border border-gray-700 py-2 px-4 rounded-xl shadow-lg flex items-center gap-2 animate-[float_5s_ease-in-out_infinite_reverse]">
+                            <i class="fas fa-box-open text-primary"></i>
+                            <span class="font-cairo text-sm font-bold">إدارة ERP</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 bg-dark/50 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl font-extrabold font-cairo mb-4">الملخص <span class="text-primary">المهني</span></h2>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="bg-card p-8 md:p-12 rounded-3xl border border-gray-800 shadow-2xl relative overflow-hidden reveal">
+                <!-- Decorative Icon -->
+                <i class="fas fa-quote-left absolute top-8 right-8 text-6xl text-white/5"></i>
+                
+                <p class="text-xl leading-loose text-textMain md:text-justify relative z-10 font-tajawal">
+                    محاسب ومسؤول مخازن طموح يتمتع بخبرة عملية في الربط بين الدورة المستندية للمخزون والتسويات المالية. ماهر في استخدام البرامج المحاسبية وأنظمة إدارة المستودعات (ERP) مع قدرة عالية على تنظيم عمليات الجرد الدوري، ومطابقة الفواتير، وضبط كميات المخازن لتقليل الهدر. 
+                    <br><br>
+                    أتميز بالدقة، وسرعة التعلم، والقدرة على تقديم تقارير مالية ومخزنية دقيقة تدعم اتخاذ القرار مع مهارة متقدمة في استخدام الإكسل وبرامج المحاسبة المختلفة.
+                </p>
+
+                <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center border-t border-gray-700 pt-8 relative z-10">
+                    <div>
+                        <div class="text-primary text-3xl mb-2"><i class="fas fa-map-marker-alt"></i></div>
+                        <h4 class="font-cairo font-bold text-lg">الموقع</h4>
+                        <p class="text-textMuted text-sm">الرياض، السعودية</p>
+                    </div>
+                    <div>
+                        <div class="text-primary text-3xl mb-2"><i class="fas fa-flag"></i></div>
+                        <h4 class="font-cairo font-bold text-lg">الجنسية</h4>
+                        <p class="text-textMuted text-sm">يمني</p>
+                    </div>
+                    <div>
+                        <div class="text-primary text-3xl mb-2"><i class="fas fa-language"></i></div>
+                        <h4 class="font-cairo font-bold text-lg">اللغات</h4>
+                        <p class="text-textMuted text-sm">العربية، الإنجليزية</p>
+                    </div>
+                    <div>
+                        <div class="text-primary text-3xl mb-2"><i class="fas fa-calendar-alt"></i></div>
+                        <h4 class="font-cairo font-bold text-lg">سنة الميلاد</h4>
+                        <p class="text-textMuted text-sm">1992</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl font-extrabold font-cairo mb-4">المهارات <span class="text-primary">التقنية والعملية</span></h2>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+                <p class="text-textMuted mt-4 max-w-2xl mx-auto">مجموعة من المهارات المكتسبة عبر التجربة العملية والتعليم الأكاديمي لدعم اتخاذ القرار وتقليل الهدر المالي.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Skill Card 1 -->
+                <div class="bg-card p-6 rounded-2xl border border-gray-800 hover:border-primary/50 transition-colors group reveal">
+                    <div class="w-14 h-14 bg-dark rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-primary/20">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-cairo mb-2">إعداد التقارير المالية</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">تجهيز التقارير الدورية بدقة عالية وعمل التسويات البنكية وحسابات الصناديق لدعم الإدارة.</p>
+                </div>
+
+                <!-- Skill Card 2 -->
+                <div class="bg-card p-6 rounded-2xl border border-gray-800 hover:border-primary/50 transition-colors group reveal" style="transition-delay: 100ms;">
+                    <div class="w-14 h-14 bg-dark rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-primary/20">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-cairo mb-2">إدارة المخزون</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">مراقبة حركة المخزون، ضمان مطابقة الرصيد الدفتري مع الفعلي، وتقليل الهدر.</p>
+                </div>
+
+                <!-- Skill Card 3 -->
+                <div class="bg-card p-6 rounded-2xl border border-gray-800 hover:border-primary/50 transition-colors group reveal" style="transition-delay: 200ms;">
+                    <div class="w-14 h-14 bg-dark rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-primary/20">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-cairo mb-2">أنظمة ERP</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">استخدام البرامج المحاسبية المتنوعة (مثل نظام سماك) في تسجيل العمليات واستخراج البيانات.</p>
+                </div>
+
+                <!-- Skill Card 4 -->
+                <div class="bg-card p-6 rounded-2xl border border-gray-800 hover:border-primary/50 transition-colors group reveal">
+                    <div class="w-14 h-14 bg-dark rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-primary/20">
+                        <i class="fas fa-table"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-cairo mb-2">مايكروسوفت إكسيل</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">مهارات متقدمة في استخدام Excel لتحليل البيانات المالية، الانحرافات، وعمل التقارير اليومية.</p>
+                </div>
+
+                <!-- Skill Card 5 -->
+                <div class="bg-card p-6 rounded-2xl border border-gray-800 hover:border-primary/50 transition-colors group reveal" style="transition-delay: 100ms;">
+                    <div class="w-14 h-14 bg-dark rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-primary/20">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-cairo mb-2">إدارة الدائنة والمدينة</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">إدارة فواتير المبيعات والمشتريات، متابعة المندوبين، وعمل سندات القبض والصرف.</p>
+                </div>
+
+                <!-- Skill Card 6 -->
+                <div class="bg-card p-6 rounded-2xl border border-gray-800 hover:border-primary/50 transition-colors group reveal" style="transition-delay: 200ms;">
+                    <div class="w-14 h-14 bg-dark rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-primary/20">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-cairo mb-2">المحاسبة الضريبية (VAT)</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">معرفة قوية في التعامل مع ضريبة القيمة المضافة والتسويات المرتبطة بها والتدقيق والمراجعة.</p>
+                </div>
+
+            </div>
+
+            <!-- Soft Skills Tags -->
+            <div class="mt-16 reveal">
+                <h3 class="text-2xl font-bold font-cairo mb-6 text-center">المهارات الشخصية</h3>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <span class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">الالتزام والعمل بجدية</span>
+                    <span class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">الاهتمام بالتفاصيل</span>
+                    <span class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">قدرات تنظيمية عالية</span>
+                    <span class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">العمل ضمن فريق</span>
+                    <span class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">القدرة على العمل بشكل منفرد</span>
+                    <span class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">سرعة التعلم</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="py-20 bg-dark/50 relative overflow-hidden">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl font-extrabold font-cairo mb-4">الخبرات <span class="text-primary">العملية</span></h2>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="relative">
+                <!-- The center line -->
+                <div class="timeline-line hidden md:block"></div>
+
+                <!-- Timeline Item 1 -->
+                <div class="relative flex flex-col md:flex-row justify-between items-center mb-16 reveal">
+                    <div class="order-1 w-full md:w-5/12 text-right md:text-left md:ps-8">
+                        <!-- Date Mobile -->
+                        <div class="md:hidden inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-bold mb-3 border border-primary/20">
+                            مارس 2026 - حتى الآن
+                        </div>
+                        <div class="bg-card p-6 rounded-2xl border border-gray-800 hover:shadow-lg hover:shadow-primary/5 transition-all z-10 relative">
+                            <h3 class="text-2xl font-bold font-cairo text-primary mb-1">أمين مستودع</h3>
+                            <h4 class="text-lg text-white mb-4">شركة صبا (النجاح) للمخبوزات</h4>
+                            <ul class="text-textMuted text-sm space-y-2 list-none p-0 text-right">
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-primary mt-1 text-xs"></i>
+                                    <span>إدارة ومراقبة حركة المخزون وضمان مطابقة الرصيد الدفتري مع الفعلي.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-primary mt-1 text-xs"></i>
+                                    <span>تنظيم عمليات الاستلام والتسجيل في النظام المحاسبي.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-primary mt-1 text-xs"></i>
+                                    <span>إعداد تقارير دورية عن حالة المخزون والمواد التالفة لتقليل الهدر.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-primary mt-1 text-xs"></i>
+                                    <span>عمل فواتير المبيعات والمشتريات ومتابعة المندوبين.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Center Dot -->
+                    <div class="z-20 flex items-center order-1 bg-dark shadow-xl w-10 h-10 rounded-full border-4 border-primary absolute right-[6px] md:relative md:right-auto mt-4 md:mt-0">
+                        <i class="fas fa-briefcase mx-auto text-primary text-xs"></i>
+                    </div>
+                    <!-- Date Desktop -->
+                    <div class="order-1 w-full md:w-5/12 hidden md:block text-right pr-8">
+                        <div class="inline-block px-4 py-2 bg-card/80 backdrop-blur text-primary rounded-full text-sm font-bold border border-gray-700">
+                            مارس 2026 - حتى الآن
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 2 -->
+                <div class="relative flex flex-col md:flex-row justify-between items-center reveal">
+                    <!-- Date Desktop -->
+                    <div class="order-1 w-full md:w-5/12 hidden md:block text-left pl-8">
+                        <div class="inline-block px-4 py-2 bg-card/80 backdrop-blur text-primary rounded-full text-sm font-bold border border-gray-700">
+                            يناير 2026 - مارس 2026
+                        </div>
+                    </div>
+                    <!-- Center Dot -->
+                    <div class="z-20 flex items-center order-1 bg-dark shadow-xl w-10 h-10 rounded-full border-4 border-gray-600 absolute right-[6px] md:relative md:right-auto mt-4 md:mt-0">
+                        <i class="fas fa-calculator mx-auto text-gray-400 text-xs"></i>
+                    </div>
+                    <div class="order-1 w-full md:w-5/12 text-right md:pe-8">
+                        <!-- Date Mobile -->
+                        <div class="md:hidden inline-block px-3 py-1 bg-gray-800 text-gray-300 rounded-full text-sm font-bold mb-3 border border-gray-700">
+                            يناير 2026 - مارس 2026
+                        </div>
+                        <div class="bg-card p-6 rounded-2xl border border-gray-800 hover:shadow-lg hover:shadow-gray-700/20 transition-all z-10 relative">
+                            <h3 class="text-2xl font-bold font-cairo text-white mb-1">مساعد محاسب</h3>
+                            <h4 class="text-lg text-primary mb-4">شركة مصنع تمور الرياض</h4>
+                            <ul class="text-textMuted text-sm space-y-2 list-none p-0 text-right">
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-primary mt-1 text-xs"></i>
+                                    <span>إدخال القيود اليومية وتسوية الحسابات البنكية بدقة.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-primary mt-1 text-xs"></i>
+                                    <span>دعم الفريق المالي في إعداد التقارير الشهرية.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-primary mt-1 text-xs"></i>
+                                    <span>أرشفة المستندات المالية وضمان دقة البيانات المحاسبية.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-primary mt-1 text-xs"></i>
+                                    <span>إعداد سندات القبض والصرف وعمل الإنتاج اليومي عبر الإكسل.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="education" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl font-extrabold font-cairo mb-4">المؤهلات <span class="text-primary">الأكاديمية</span></h2>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Education Card 1 -->
+                <div class="bg-gradient-to-br from-card to-dark p-1 rounded-2xl reveal">
+                    <div class="bg-card p-8 rounded-xl h-full border border-gray-800/50 flex flex-col items-center text-center hover:bg-gray-800/50 transition-colors">
+                        <div class="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center text-3xl mb-6">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold font-cairo mb-2">بكالوريوس محاسبة</h3>
+                        <p class="text-lg text-white mb-1">جامعة العلوم الحديثة</p>
+                        <p class="text-textMuted text-sm mb-4">صنعاء، اليمن</p>
+                        <div class="mt-auto inline-block px-4 py-1 bg-dark rounded-full text-sm border border-gray-700">
+                            2012 - 2016
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education Card 2 -->
+                <div class="bg-gradient-to-br from-card to-dark p-1 rounded-2xl reveal" style="transition-delay: 100ms;">
+                    <div class="bg-card p-8 rounded-xl h-full border border-gray-800/50 flex flex-col items-center text-center hover:bg-gray-800/50 transition-colors">
+                        <div class="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center text-3xl mb-6">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold font-cairo mb-2">دبلوم لغة إنجليزية متوسط</h3>
+                        <p class="text-lg text-white mb-1">معهد اكسيد</p>
+                        <p class="text-textMuted text-sm mb-4">صنعاء، اليمن</p>
+                        <div class="mt-auto inline-block px-4 py-1 bg-dark rounded-full text-sm border border-gray-700">
+                            2023
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 bg-dark/50 relative border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl font-extrabold font-cairo mb-4">تواصل <span class="text-primary">معي</span></h2>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+                <p class="text-textMuted mt-4">مستعد دائمًا لمناقشة فرص العمل والتعاون المهني.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto reveal">
+                
+                <!-- Contact Card 1 -->
+                <a href="tel:0536330810" class="bg-card p-6 rounded-2xl border border-gray-700 flex flex-col items-center justify-center text-center hover:border-primary hover:-translate-y-2 transition-all duration-300 group">
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl mb-4 group-hover:bg-primary group-hover:text-dark transition-colors">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <h3 class="font-cairo font-bold text-lg mb-1">رقم الهاتف</h3>
+                    <p class="text-textMuted dir-ltr">0536330810</p>
+                </a>
+
+                <!-- Contact Card 2 -->
+                <a href="mailto:abogithalshbamy@gmail.com" class="bg-card p-6 rounded-2xl border border-gray-700 flex flex-col items-center justify-center text-center hover:border-primary hover:-translate-y-2 transition-all duration-300 group">
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl mb-4 group-hover:bg-primary group-hover:text-dark transition-colors">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3 class="font-cairo font-bold text-lg mb-1">البريد الإلكتروني</h3>
+                    <p class="text-textMuted text-sm">abogithalshbamy@gmail.com</p>
+                </a>
+
+                <!-- Contact Card 3 -->
+                <a href="https://wa.me/966536330810" target="_blank" class="bg-card p-6 rounded-2xl border border-gray-700 flex flex-col items-center justify-center text-center hover:border-green-500 hover:-translate-y-2 transition-all duration-300 group">
+                    <div class="w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center text-green-500 text-xl mb-4 group-hover:bg-green-500 group-hover:text-white transition-colors">
+                        <i class="fab fa-whatsapp text-2xl"></i>
+                    </div>
+                    <h3 class="font-cairo font-bold text-lg mb-1">واتساب</h3>
+                    <p class="text-textMuted dir-ltr">مراسلة مباشرة</p>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark py-8 border-t border-gray-800 text-center">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-center items-center gap-4 mb-4">
+                <a href="mailto:abogithalshbamy@gmail.com" class="text-gray-400 hover:text-primary transition-colors text-xl"><i class="fas fa-envelope"></i></a>
+                <a href="https://wa.me/966536330810" class="text-gray-400 hover:text-primary transition-colors text-xl"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <p class="text-textMuted text-sm font-tajawal">
+                جميع الحقوق محفوظة &copy; <span id="year"></span> | <span class="font-cairo font-bold text-white">أيمن الشبامي</span>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Update current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Scroll Animations using Intersection Observer
+        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+
+        const revealOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, revealOptions);
+
+        revealElements.forEach(el => {
+            revealOnScroll.observe(el);
+        });
+
+        // Navbar blur effect on scroll
+        const navbar = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+                navbar.style.background = 'rgba(15, 23, 42, 0.95)';
+            } else {
+                navbar.classList.remove('shadow-lg');
+                navbar.style.background = 'rgba(15, 23, 42, 0.85)';
+            }
+        });
+    </script>
+</body>
+</html>
