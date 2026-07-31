@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أيمن الشبامي | محاسب محترف</title>
+    <title data-i18n="page_title">أيمن الشبامي | محاسب محترف</title>
     
     <!-- Google Fonts: Cairo & Tajawal -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -110,6 +110,11 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        html[dir="ltr"] .text-gradient {
+            background: linear-gradient(to right, #f59e0b, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
         /* Blob Background */
         .blob {
@@ -132,12 +137,20 @@
             bottom: 0;
             width: 2px;
             background: rgba(245, 158, 11, 0.2);
-            right: 16px; /* For RTL */
         }
+        html[dir="rtl"] .timeline-line { right: 16px; left: auto; }
+        html[dir="ltr"] .timeline-line { left: 16px; right: auto; }
+        
         @media (min-width: 768px) {
-            .timeline-line {
+            html[dir="rtl"] .timeline-line {
                 right: 50%;
                 transform: translateX(50%);
+                left: auto;
+            }
+            html[dir="ltr"] .timeline-line {
+                left: 50%;
+                transform: translateX(-50%);
+                right: auto;
             }
         }
     </style>
@@ -145,8 +158,8 @@
 <body class="antialiased relative">
 
     <!-- Background Decoration -->
-    <div class="blob bg-primary/20 w-96 h-96 rounded-full top-[-10%] right-[-10%]"></div>
-    <div class="blob bg-blue-900/20 w-96 h-96 rounded-full bottom-[10%] left-[-10%]"></div>
+    <div class="blob bg-primary/20 w-96 h-96 rounded-full top-[-10%] end-[-10%]"></div>
+    <div class="blob bg-blue-900/20 w-96 h-96 rounded-full bottom-[10%] start-[-10%]"></div>
 
     <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -156,27 +169,33 @@
                     <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-dark font-bold text-xl">
                         A
                     </div>
-                    <span class="font-cairo font-bold text-2xl tracking-wide">أيمن <span class="text-primary">الشبامي</span></span>
+                    <span class="font-cairo font-bold text-2xl tracking-wide"><span data-i18n="nav_name_first">أيمن</span> <span class="text-primary" data-i18n="nav_name_last">الشبامي</span></span>
                 </div>
 
                 <!-- Desktop Menu -->
-                <div class="hidden md:flex space-x-8 space-x-reverse">
-                    <a href="#home" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">الرئيسية</a>
-                    <a href="#about" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">عني</a>
-                    <a href="#skills" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">المهارات</a>
-                    <a href="#experience" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">الخبرات</a>
-                    <a href="#education" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">التعليم</a>
+                <div class="hidden md:flex gap-8">
+                    <a href="#home" data-i18n="nav_home" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">الرئيسية</a>
+                    <a href="#about" data-i18n="nav_about" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">عني</a>
+                    <a href="#skills" data-i18n="nav_skills" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">المهارات</a>
+                    <a href="#experience" data-i18n="nav_experience" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">الخبرات</a>
+                    <a href="#education" data-i18n="nav_education" class="nav-link text-textMain hover:text-primary transition-colors text-lg font-semibold">التعليم</a>
                 </div>
 
-                <!-- Contact Button (Desktop) -->
-                <div class="hidden md:block">
-                    <a href="#contact" class="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary hover:text-dark transition-all duration-300 font-cairo font-bold">
+                <!-- Action Buttons (Desktop) -->
+                <div class="hidden md:flex items-center gap-4">
+                    <button onclick="toggleLanguage()" id="lang-toggle-btn" class="flex items-center gap-2 text-textMuted hover:text-primary transition-colors font-cairo font-bold">
+                        <i class="fas fa-globe"></i> English
+                    </button>
+                    <a href="#contact" data-i18n="nav_contact" class="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary hover:text-dark transition-all duration-300 font-cairo font-bold">
                         تواصل معي
                     </a>
                 </div>
 
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center">
+                <!-- Mobile Menu Button & Lang Toggle -->
+                <div class="md:hidden flex items-center gap-4">
+                    <button onclick="toggleLanguage()" id="lang-toggle-mobile" class="text-textMuted hover:text-primary focus:outline-none text-sm font-bold">
+                        EN
+                    </button>
                     <button id="mobile-menu-btn" class="text-textMain hover:text-primary focus:outline-none">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
@@ -187,12 +206,12 @@
         <!-- Mobile Menu Panel -->
         <div id="mobile-menu" class="md:hidden hidden bg-card border-t border-gray-700">
             <div class="px-4 pt-2 pb-6 space-y-2 text-center">
-                <a href="#home" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">الرئيسية</a>
-                <a href="#about" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">عني</a>
-                <a href="#skills" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">المهارات</a>
-                <a href="#experience" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">الخبرات</a>
-                <a href="#education" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">التعليم</a>
-                <a href="#contact" class="block px-3 py-3 rounded-md text-base font-medium text-primary hover:bg-gray-700 transition">تواصل معي</a>
+                <a href="#home" data-i18n="nav_home" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">الرئيسية</a>
+                <a href="#about" data-i18n="nav_about" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">عني</a>
+                <a href="#skills" data-i18n="nav_skills" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">المهارات</a>
+                <a href="#experience" data-i18n="nav_experience" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">الخبرات</a>
+                <a href="#education" data-i18n="nav_education" class="block px-3 py-3 rounded-md text-base font-medium hover:bg-gray-700 hover:text-primary transition">التعليم</a>
+                <a href="#contact" data-i18n="nav_contact" class="block px-3 py-3 rounded-md text-base font-medium text-primary hover:bg-gray-700 transition">تواصل معي</a>
             </div>
         </div>
     </nav>
@@ -202,22 +221,22 @@
             <div class="flex flex-col md:flex-row items-center justify-between gap-12">
                 
                 <!-- Text Content -->
-                <div class="flex-1 text-center md:text-right reveal-right">
-                    <span class="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary text-sm font-bold mb-4 font-cairo border border-primary/20">
+                <div class="flex-1 text-center md:text-start reveal-right">
+                    <span data-i18n="hero_badge" class="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary text-sm font-bold mb-4 font-cairo border border-primary/20">
                         مرحباً بك في ملفي الشخصي 👋
                     </span>
                     <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight">
-                        أنا <span class="text-gradient">أيمن الشبامي</span>
+                        <span data-i18n="hero_i_am">أنا </span><span class="text-gradient" data-i18n="hero_name">أيمن الشبامي</span>
                     </h1>
-                    <h2 class="text-2xl md:text-3xl text-textMuted mb-6 font-cairo font-semibold">
+                    <h2 data-i18n="hero_subtitle" class="text-2xl md:text-3xl text-textMuted mb-6 font-cairo font-semibold">
                         محاسب محترف ومسؤول مخازن
                     </h2>
-                    <p class="text-lg text-textMuted mb-8 max-w-2xl mx-auto md:mx-0 leading-relaxed">
+                    <p data-i18n="hero_desc" class="text-lg text-textMuted mb-8 max-w-2xl mx-auto md:mx-0 leading-relaxed">
                         أجمع بين الدقة المحاسبية والإدارة الفعالة للمخزون. أطمح دائماً لتحسين الكفاءة المالية ودعم اتخاذ القرارات الاستراتيجية من خلال تحليل دقيق للبيانات.
                     </p>
                     
                     <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
-                        <a href="#contact" class="px-8 py-3 rounded-full bg-primary text-dark font-bold font-cairo text-lg hover:bg-primaryHover hover:scale-105 transition-all duration-300 shadow-lg shadow-primary/30">
+                        <a href="#contact" data-i18n="hero_btn" class="px-8 py-3 rounded-full bg-primary text-dark font-bold font-cairo text-lg hover:bg-primaryHover hover:scale-105 transition-all duration-300 shadow-lg shadow-primary/30">
                             وظفني الآن
                         </a>
                         <div class="flex gap-4">
@@ -242,18 +261,18 @@
                         <div class="absolute inset-8 bg-card rounded-2xl border border-gray-700 shadow-2xl flex flex-col items-center justify-center overflow-hidden group">
                             <div class="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors duration-500"></div>
                             <i class="fas fa-chart-pie text-6xl text-primary mb-4 transform group-hover:scale-110 transition-transform duration-500"></i>
-                            <h3 class="font-cairo font-bold text-2xl text-center">الكفاءة المالية</h3>
-                            <p class="text-textMuted text-sm text-center mt-2 px-4">دقة، تحليل، وإدارة مستودعات متطورة</p>
+                            <h3 data-i18n="hero_card_title" class="font-cairo font-bold text-2xl text-center">الكفاءة المالية</h3>
+                            <p data-i18n="hero_card_desc" class="text-textMuted text-sm text-center mt-2 px-4">دقة، تحليل، وإدارة مستودعات متطورة</p>
                         </div>
 
                         <!-- Floating Badges -->
-                        <div class="absolute top-10 -right-4 bg-card border border-gray-700 py-2 px-4 rounded-xl shadow-lg flex items-center gap-2 animate-[float_4s_ease-in-out_infinite]">
+                        <div class="absolute top-10 -end-4 bg-card border border-gray-700 py-2 px-4 rounded-xl shadow-lg flex items-center gap-2 animate-[float_4s_ease-in-out_infinite]">
                             <i class="fas fa-check-circle text-green-500"></i>
-                            <span class="font-cairo text-sm font-bold">دقة عالية</span>
+                            <span data-i18n="hero_badge_1" class="font-cairo text-sm font-bold">دقة عالية</span>
                         </div>
-                        <div class="absolute bottom-10 -left-4 bg-card border border-gray-700 py-2 px-4 rounded-xl shadow-lg flex items-center gap-2 animate-[float_5s_ease-in-out_infinite_reverse]">
+                        <div class="absolute bottom-10 -start-4 bg-card border border-gray-700 py-2 px-4 rounded-xl shadow-lg flex items-center gap-2 animate-[float_5s_ease-in-out_infinite_reverse]">
                             <i class="fas fa-box-open text-primary"></i>
-                            <span class="font-cairo text-sm font-bold">إدارة ERP</span>
+                            <span data-i18n="hero_badge_2" class="font-cairo text-sm font-bold">إدارة ERP</span>
                         </div>
                     </div>
                 </div>
@@ -265,15 +284,15 @@
     <section id="about" class="py-20 bg-dark/50 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
-                <h2 class="text-4xl font-extrabold font-cairo mb-4">الملخص <span class="text-primary">المهني</span></h2>
+                <h2 class="text-4xl font-extrabold font-cairo mb-4"><span data-i18n="about_title_1">الملخص </span><span class="text-primary" data-i18n="about_title_2">المهني</span></h2>
                 <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
             </div>
 
             <div class="bg-card p-8 md:p-12 rounded-3xl border border-gray-800 shadow-2xl relative overflow-hidden reveal">
                 <!-- Decorative Icon -->
-                <i class="fas fa-quote-left absolute top-8 right-8 text-6xl text-white/5"></i>
+                <i class="fas fa-quote-left absolute top-8 end-8 text-6xl text-white/5 rtl:rotate-0 ltr:rotate-180"></i>
                 
-                <p class="text-xl leading-loose text-textMain md:text-justify relative z-10 font-tajawal">
+                <p data-i18n="about_desc" class="text-xl leading-loose text-textMain md:text-justify relative z-10 font-tajawal">
                     محاسب ومسؤول مخازن طموح يتمتع بخبرة عملية في الربط بين الدورة المستندية للمخزون والتسويات المالية. ماهر في استخدام البرامج المحاسبية وأنظمة إدارة المستودعات (ERP) مع قدرة عالية على تنظيم عمليات الجرد الدوري، ومطابقة الفواتير، وضبط كميات المخازن لتقليل الهدر. 
                     <br><br>
                     أتميز بالدقة، وسرعة التعلم، والقدرة على تقديم تقارير مالية ومخزنية دقيقة تدعم اتخاذ القرار مع مهارة متقدمة في استخدام الإكسل وبرامج المحاسبة المختلفة.
@@ -282,22 +301,22 @@
                 <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center border-t border-gray-700 pt-8 relative z-10">
                     <div>
                         <div class="text-primary text-3xl mb-2"><i class="fas fa-map-marker-alt"></i></div>
-                        <h4 class="font-cairo font-bold text-lg">الموقع</h4>
-                        <p class="text-textMuted text-sm">الرياض، السعودية</p>
+                        <h4 data-i18n="about_loc_title" class="font-cairo font-bold text-lg">الموقع</h4>
+                        <p data-i18n="about_loc_val" class="text-textMuted text-sm">الرياض، السعودية</p>
                     </div>
                     <div>
                         <div class="text-primary text-3xl mb-2"><i class="fas fa-flag"></i></div>
-                        <h4 class="font-cairo font-bold text-lg">الجنسية</h4>
-                        <p class="text-textMuted text-sm">يمني</p>
+                        <h4 data-i18n="about_nat_title" class="font-cairo font-bold text-lg">الجنسية</h4>
+                        <p data-i18n="about_nat_val" class="text-textMuted text-sm">يمني</p>
                     </div>
                     <div>
                         <div class="text-primary text-3xl mb-2"><i class="fas fa-language"></i></div>
-                        <h4 class="font-cairo font-bold text-lg">اللغات</h4>
-                        <p class="text-textMuted text-sm">العربية، الإنجليزية</p>
+                        <h4 data-i18n="about_lang_title" class="font-cairo font-bold text-lg">اللغات</h4>
+                        <p data-i18n="about_lang_val" class="text-textMuted text-sm">العربية، الإنجليزية</p>
                     </div>
                     <div>
                         <div class="text-primary text-3xl mb-2"><i class="fas fa-calendar-alt"></i></div>
-                        <h4 class="font-cairo font-bold text-lg">سنة الميلاد</h4>
+                        <h4 data-i18n="about_age_title" class="font-cairo font-bold text-lg">سنة الميلاد</h4>
                         <p class="text-textMuted text-sm">1992</p>
                     </div>
                 </div>
@@ -308,9 +327,9 @@
     <section id="skills" class="py-20 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
-                <h2 class="text-4xl font-extrabold font-cairo mb-4">المهارات <span class="text-primary">التقنية والعملية</span></h2>
+                <h2 class="text-4xl font-extrabold font-cairo mb-4"><span data-i18n="skills_title_1">المهارات </span><span class="text-primary" data-i18n="skills_title_2">التقنية والعملية</span></h2>
                 <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
-                <p class="text-textMuted mt-4 max-w-2xl mx-auto">مجموعة من المهارات المكتسبة عبر التجربة العملية والتعليم الأكاديمي لدعم اتخاذ القرار وتقليل الهدر المالي.</p>
+                <p data-i18n="skills_subtitle" class="text-textMuted mt-4 max-w-2xl mx-auto">مجموعة من المهارات المكتسبة عبر التجربة العملية والتعليم الأكاديمي لدعم اتخاذ القرار وتقليل الهدر المالي.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -320,8 +339,8 @@
                     <div class="w-14 h-14 bg-dark rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-primary/20">
                         <i class="fas fa-file-invoice-dollar"></i>
                     </div>
-                    <h3 class="text-xl font-bold font-cairo mb-2">إعداد التقارير المالية</h3>
-                    <p class="text-textMuted text-sm leading-relaxed">تجهيز التقارير الدورية بدقة عالية وعمل التسويات البنكية وحسابات الصناديق لدعم الإدارة.</p>
+                    <h3 data-i18n="skill_1_title" class="text-xl font-bold font-cairo mb-2">إعداد التقارير المالية</h3>
+                    <p data-i18n="skill_1_desc" class="text-textMuted text-sm leading-relaxed">تجهيز التقارير الدورية بدقة عالية وعمل التسويات البنكية وحسابات الصناديق لدعم الإدارة.</p>
                 </div>
 
                 <!-- Skill Card 2 -->
@@ -329,8 +348,8 @@
                     <div class="w-14 h-14 bg-dark rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-primary/20">
                         <i class="fas fa-boxes"></i>
                     </div>
-                    <h3 class="text-xl font-bold font-cairo mb-2">إدارة المخزون</h3>
-                    <p class="text-textMuted text-sm leading-relaxed">مراقبة حركة المخزون، ضمان مطابقة الرصيد الدفتري مع الفعلي، وتقليل الهدر.</p>
+                    <h3 data-i18n="skill_2_title" class="text-xl font-bold font-cairo mb-2">إدارة المخزون</h3>
+                    <p data-i18n="skill_2_desc" class="text-textMuted text-sm leading-relaxed">مراقبة حركة المخزون، ضمان مطابقة الرصيد الدفتري مع الفعلي، وتقليل الهدر.</p>
                 </div>
 
                 <!-- Skill Card 3 -->
@@ -338,8 +357,8 @@
                     <div class="w-14 h-14 bg-dark rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-primary/20">
                         <i class="fas fa-network-wired"></i>
                     </div>
-                    <h3 class="text-xl font-bold font-cairo mb-2">أنظمة ERP</h3>
-                    <p class="text-textMuted text-sm leading-relaxed">استخدام البرامج المحاسبية المتنوعة (مثل نظام سماك) في تسجيل العمليات واستخراج البيانات.</p>
+                    <h3 data-i18n="skill_3_title" class="text-xl font-bold font-cairo mb-2">أنظمة ERP</h3>
+                    <p data-i18n="skill_3_desc" class="text-textMuted text-sm leading-relaxed">استخدام البرامج المحاسبية المتنوعة (مثل نظام سماك) في تسجيل العمليات واستخراج البيانات.</p>
                 </div>
 
                 <!-- Skill Card 4 -->
@@ -347,8 +366,8 @@
                     <div class="w-14 h-14 bg-dark rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-primary/20">
                         <i class="fas fa-table"></i>
                     </div>
-                    <h3 class="text-xl font-bold font-cairo mb-2">مايكروسوفت إكسيل</h3>
-                    <p class="text-textMuted text-sm leading-relaxed">مهارات متقدمة في استخدام Excel لتحليل البيانات المالية، الانحرافات، وعمل التقارير اليومية.</p>
+                    <h3 data-i18n="skill_4_title" class="text-xl font-bold font-cairo mb-2">مايكروسوفت إكسيل</h3>
+                    <p data-i18n="skill_4_desc" class="text-textMuted text-sm leading-relaxed">مهارات متقدمة في استخدام Excel لتحليل البيانات المالية، الانحرافات، وعمل التقارير اليومية.</p>
                 </div>
 
                 <!-- Skill Card 5 -->
@@ -356,8 +375,8 @@
                     <div class="w-14 h-14 bg-dark rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-primary/20">
                         <i class="fas fa-balance-scale"></i>
                     </div>
-                    <h3 class="text-xl font-bold font-cairo mb-2">إدارة الدائنة والمدينة</h3>
-                    <p class="text-textMuted text-sm leading-relaxed">إدارة فواتير المبيعات والمشتريات، متابعة المندوبين، وعمل سندات القبض والصرف.</p>
+                    <h3 data-i18n="skill_5_title" class="text-xl font-bold font-cairo mb-2">إدارة الدائنة والمدينة</h3>
+                    <p data-i18n="skill_5_desc" class="text-textMuted text-sm leading-relaxed">إدارة فواتير المبيعات والمشتريات، متابعة المندوبين، وعمل سندات القبض والصرف.</p>
                 </div>
 
                 <!-- Skill Card 6 -->
@@ -365,22 +384,22 @@
                     <div class="w-14 h-14 bg-dark rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-primary/20">
                         <i class="fas fa-percentage"></i>
                     </div>
-                    <h3 class="text-xl font-bold font-cairo mb-2">المحاسبة الضريبية (VAT)</h3>
-                    <p class="text-textMuted text-sm leading-relaxed">معرفة قوية في التعامل مع ضريبة القيمة المضافة والتسويات المرتبطة بها والتدقيق والمراجعة.</p>
+                    <h3 data-i18n="skill_6_title" class="text-xl font-bold font-cairo mb-2">المحاسبة الضريبية (VAT)</h3>
+                    <p data-i18n="skill_6_desc" class="text-textMuted text-sm leading-relaxed">معرفة قوية في التعامل مع ضريبة القيمة المضافة والتسويات المرتبطة بها والتدقيق والمراجعة.</p>
                 </div>
 
             </div>
 
             <!-- Soft Skills Tags -->
             <div class="mt-16 reveal">
-                <h3 class="text-2xl font-bold font-cairo mb-6 text-center">المهارات الشخصية</h3>
+                <h3 data-i18n="soft_skills_title" class="text-2xl font-bold font-cairo mb-6 text-center">المهارات الشخصية</h3>
                 <div class="flex flex-wrap justify-center gap-3">
-                    <span class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">الالتزام والعمل بجدية</span>
-                    <span class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">الاهتمام بالتفاصيل</span>
-                    <span class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">قدرات تنظيمية عالية</span>
-                    <span class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">العمل ضمن فريق</span>
-                    <span class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">القدرة على العمل بشكل منفرد</span>
-                    <span class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">سرعة التعلم</span>
+                    <span data-i18n="soft_1" class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">الالتزام والعمل بجدية</span>
+                    <span data-i18n="soft_2" class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">الاهتمام بالتفاصيل</span>
+                    <span data-i18n="soft_3" class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">قدرات تنظيمية عالية</span>
+                    <span data-i18n="soft_4" class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">العمل ضمن فريق</span>
+                    <span data-i18n="soft_5" class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">القدرة على العمل بشكل منفرد</span>
+                    <span data-i18n="soft_6" class="px-4 py-2 bg-dark border border-gray-700 rounded-full text-sm hover:border-primary transition-colors cursor-default">سرعة التعلم</span>
                 </div>
             </div>
         </div>
@@ -390,7 +409,7 @@
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             
             <div class="text-center mb-16 reveal">
-                <h2 class="text-4xl font-extrabold font-cairo mb-4">الخبرات <span class="text-primary">العملية</span></h2>
+                <h2 class="text-4xl font-extrabold font-cairo mb-4"><span data-i18n="exp_title_1">الخبرات </span><span class="text-primary" data-i18n="exp_title_2">العملية</span></h2>
                 <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
             </div>
 
@@ -400,41 +419,41 @@
 
                 <!-- Timeline Item 1 -->
                 <div class="relative flex flex-col md:flex-row justify-between items-center mb-16 reveal">
-                    <div class="order-1 w-full md:w-5/12 text-right md:text-left md:ps-8">
+                    <div class="order-1 w-full md:w-5/12 text-start md:text-end md:pe-8">
                         <!-- Date Mobile -->
-                        <div class="md:hidden inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-bold mb-3 border border-primary/20">
+                        <div data-i18n="exp_1_date" class="md:hidden inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-bold mb-3 border border-primary/20">
                             مارس 2026 - حتى الآن
                         </div>
                         <div class="bg-card p-6 rounded-2xl border border-gray-800 hover:shadow-lg hover:shadow-primary/5 transition-all z-10 relative">
-                            <h3 class="text-2xl font-bold font-cairo text-primary mb-1">أمين مستودع</h3>
-                            <h4 class="text-lg text-white mb-4">شركة صبا (النجاح) للمخبوزات</h4>
-                            <ul class="text-textMuted text-sm space-y-2 list-none p-0 text-right">
+                            <h3 data-i18n="exp_1_role" class="text-2xl font-bold font-cairo text-primary mb-1">أمين مستودع</h3>
+                            <h4 data-i18n="exp_1_company" class="text-lg text-white mb-4">شركة صبا (النجاح) للمخبوزات</h4>
+                            <ul class="text-textMuted text-sm space-y-2 list-none p-0 text-start">
                                 <li class="flex items-start gap-2">
-                                    <i class="fas fa-check text-primary mt-1 text-xs"></i>
-                                    <span>إدارة ومراقبة حركة المخزون وضمان مطابقة الرصيد الدفتري مع الفعلي.</span>
+                                    <i class="fas fa-check text-primary mt-1 text-xs rtl:ml-0 ltr:mr-0"></i>
+                                    <span data-i18n="exp_1_task_1">إدارة ومراقبة حركة المخزون وضمان مطابقة الرصيد الدفتري مع الفعلي.</span>
                                 </li>
                                 <li class="flex items-start gap-2">
                                     <i class="fas fa-check text-primary mt-1 text-xs"></i>
-                                    <span>تنظيم عمليات الاستلام والتسجيل في النظام المحاسبي.</span>
+                                    <span data-i18n="exp_1_task_2">تنظيم عمليات الاستلام والتسجيل في النظام المحاسبي.</span>
                                 </li>
                                 <li class="flex items-start gap-2">
                                     <i class="fas fa-check text-primary mt-1 text-xs"></i>
-                                    <span>إعداد تقارير دورية عن حالة المخزون والمواد التالفة لتقليل الهدر.</span>
+                                    <span data-i18n="exp_1_task_3">إعداد تقارير دورية عن حالة المخزون والمواد التالفة لتقليل الهدر.</span>
                                 </li>
                                 <li class="flex items-start gap-2">
                                     <i class="fas fa-check text-primary mt-1 text-xs"></i>
-                                    <span>عمل فواتير المبيعات والمشتريات ومتابعة المندوبين.</span>
+                                    <span data-i18n="exp_1_task_4">عمل فواتير المبيعات والمشتريات ومتابعة المندوبين.</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <!-- Center Dot -->
-                    <div class="z-20 flex items-center order-1 bg-dark shadow-xl w-10 h-10 rounded-full border-4 border-primary absolute right-[6px] md:relative md:right-auto mt-4 md:mt-0">
+                    <div class="z-20 flex items-center order-1 bg-dark shadow-xl w-10 h-10 rounded-full border-4 border-primary absolute start-[6px] md:relative md:start-auto mt-4 md:mt-0">
                         <i class="fas fa-briefcase mx-auto text-primary text-xs"></i>
                     </div>
                     <!-- Date Desktop -->
-                    <div class="order-1 w-full md:w-5/12 hidden md:block text-right pr-8">
-                        <div class="inline-block px-4 py-2 bg-card/80 backdrop-blur text-primary rounded-full text-sm font-bold border border-gray-700">
+                    <div class="order-1 w-full md:w-5/12 hidden md:block text-start ps-8">
+                        <div data-i18n="exp_1_date" class="inline-block px-4 py-2 bg-card/80 backdrop-blur text-primary rounded-full text-sm font-bold border border-gray-700">
                             مارس 2026 - حتى الآن
                         </div>
                     </div>
@@ -443,39 +462,39 @@
                 <!-- Timeline Item 2 -->
                 <div class="relative flex flex-col md:flex-row justify-between items-center reveal">
                     <!-- Date Desktop -->
-                    <div class="order-1 w-full md:w-5/12 hidden md:block text-left pl-8">
-                        <div class="inline-block px-4 py-2 bg-card/80 backdrop-blur text-primary rounded-full text-sm font-bold border border-gray-700">
+                    <div class="order-1 w-full md:w-5/12 hidden md:block text-end pe-8">
+                        <div data-i18n="exp_2_date" class="inline-block px-4 py-2 bg-card/80 backdrop-blur text-primary rounded-full text-sm font-bold border border-gray-700">
                             يناير 2026 - مارس 2026
                         </div>
                     </div>
                     <!-- Center Dot -->
-                    <div class="z-20 flex items-center order-1 bg-dark shadow-xl w-10 h-10 rounded-full border-4 border-gray-600 absolute right-[6px] md:relative md:right-auto mt-4 md:mt-0">
+                    <div class="z-20 flex items-center order-1 bg-dark shadow-xl w-10 h-10 rounded-full border-4 border-gray-600 absolute start-[6px] md:relative md:start-auto mt-4 md:mt-0">
                         <i class="fas fa-calculator mx-auto text-gray-400 text-xs"></i>
                     </div>
-                    <div class="order-1 w-full md:w-5/12 text-right md:pe-8">
+                    <div class="order-1 w-full md:w-5/12 text-start md:ps-8">
                         <!-- Date Mobile -->
-                        <div class="md:hidden inline-block px-3 py-1 bg-gray-800 text-gray-300 rounded-full text-sm font-bold mb-3 border border-gray-700">
+                        <div data-i18n="exp_2_date" class="md:hidden inline-block px-3 py-1 bg-gray-800 text-gray-300 rounded-full text-sm font-bold mb-3 border border-gray-700">
                             يناير 2026 - مارس 2026
                         </div>
                         <div class="bg-card p-6 rounded-2xl border border-gray-800 hover:shadow-lg hover:shadow-gray-700/20 transition-all z-10 relative">
-                            <h3 class="text-2xl font-bold font-cairo text-white mb-1">مساعد محاسب</h3>
-                            <h4 class="text-lg text-primary mb-4">شركة مصنع تمور الرياض</h4>
-                            <ul class="text-textMuted text-sm space-y-2 list-none p-0 text-right">
+                            <h3 data-i18n="exp_2_role" class="text-2xl font-bold font-cairo text-white mb-1">مساعد محاسب</h3>
+                            <h4 data-i18n="exp_2_company" class="text-lg text-primary mb-4">شركة مصنع تمور الرياض</h4>
+                            <ul class="text-textMuted text-sm space-y-2 list-none p-0 text-start">
                                 <li class="flex items-start gap-2">
                                     <i class="fas fa-check text-primary mt-1 text-xs"></i>
-                                    <span>إدخال القيود اليومية وتسوية الحسابات البنكية بدقة.</span>
+                                    <span data-i18n="exp_2_task_1">إدخال القيود اليومية وتسوية الحسابات البنكية بدقة.</span>
                                 </li>
                                 <li class="flex items-start gap-2">
                                     <i class="fas fa-check text-primary mt-1 text-xs"></i>
-                                    <span>دعم الفريق المالي في إعداد التقارير الشهرية.</span>
+                                    <span data-i18n="exp_2_task_2">دعم الفريق المالي في إعداد التقارير الشهرية.</span>
                                 </li>
                                 <li class="flex items-start gap-2">
                                     <i class="fas fa-check text-primary mt-1 text-xs"></i>
-                                    <span>أرشفة المستندات المالية وضمان دقة البيانات المحاسبية.</span>
+                                    <span data-i18n="exp_2_task_3">أرشفة المستندات المالية وضمان دقة البيانات المحاسبية.</span>
                                 </li>
                                 <li class="flex items-start gap-2">
                                     <i class="fas fa-check text-primary mt-1 text-xs"></i>
-                                    <span>إعداد سندات القبض والصرف وعمل الإنتاج اليومي عبر الإكسل.</span>
+                                    <span data-i18n="exp_2_task_4">إعداد سندات القبض والصرف وعمل الإنتاج اليومي عبر الإكسل.</span>
                                 </li>
                             </ul>
                         </div>
@@ -489,7 +508,7 @@
     <section id="education" class="py-20 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
-                <h2 class="text-4xl font-extrabold font-cairo mb-4">المؤهلات <span class="text-primary">الأكاديمية</span></h2>
+                <h2 class="text-4xl font-extrabold font-cairo mb-4"><span data-i18n="edu_title_1">المؤهلات </span><span class="text-primary" data-i18n="edu_title_2">الأكاديمية</span></h2>
                 <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
             </div>
 
@@ -500,9 +519,9 @@
                         <div class="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center text-3xl mb-6">
                             <i class="fas fa-user-graduate"></i>
                         </div>
-                        <h3 class="text-2xl font-bold font-cairo mb-2">بكالوريوس محاسبة</h3>
-                        <p class="text-lg text-white mb-1">جامعة العلوم الحديثة</p>
-                        <p class="text-textMuted text-sm mb-4">صنعاء، اليمن</p>
+                        <h3 data-i18n="edu_1_degree" class="text-2xl font-bold font-cairo mb-2">بكالوريوس محاسبة</h3>
+                        <p data-i18n="edu_1_uni" class="text-lg text-white mb-1">جامعة العلوم الحديثة</p>
+                        <p data-i18n="edu_1_loc" class="text-textMuted text-sm mb-4">صنعاء، اليمن</p>
                         <div class="mt-auto inline-block px-4 py-1 bg-dark rounded-full text-sm border border-gray-700">
                             2012 - 2016
                         </div>
@@ -515,9 +534,9 @@
                         <div class="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center text-3xl mb-6">
                             <i class="fas fa-language"></i>
                         </div>
-                        <h3 class="text-2xl font-bold font-cairo mb-2">دبلوم لغة إنجليزية متوسط</h3>
-                        <p class="text-lg text-white mb-1">معهد اكسيد</p>
-                        <p class="text-textMuted text-sm mb-4">صنعاء، اليمن</p>
+                        <h3 data-i18n="edu_2_degree" class="text-2xl font-bold font-cairo mb-2">دبلوم لغة إنجليزية متوسط</h3>
+                        <p data-i18n="edu_2_uni" class="text-lg text-white mb-1">معهد اكسيد</p>
+                        <p data-i18n="edu_2_loc" class="text-textMuted text-sm mb-4">صنعاء، اليمن</p>
                         <div class="mt-auto inline-block px-4 py-1 bg-dark rounded-full text-sm border border-gray-700">
                             2023
                         </div>
@@ -530,9 +549,9 @@
     <section id="contact" class="py-20 bg-dark/50 relative border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
-                <h2 class="text-4xl font-extrabold font-cairo mb-4">تواصل <span class="text-primary">معي</span></h2>
+                <h2 class="text-4xl font-extrabold font-cairo mb-4"><span data-i18n="contact_title_1">تواصل </span><span class="text-primary" data-i18n="contact_title_2">معي</span></h2>
                 <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
-                <p class="text-textMuted mt-4">مستعد دائمًا لمناقشة فرص العمل والتعاون المهني.</p>
+                <p data-i18n="contact_subtitle" class="text-textMuted mt-4">مستعد دائمًا لمناقشة فرص العمل والتعاون المهني.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto reveal">
@@ -542,7 +561,7 @@
                     <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl mb-4 group-hover:bg-primary group-hover:text-dark transition-colors">
                         <i class="fas fa-phone-alt"></i>
                     </div>
-                    <h3 class="font-cairo font-bold text-lg mb-1">رقم الهاتف</h3>
+                    <h3 data-i18n="contact_phone_title" class="font-cairo font-bold text-lg mb-1">رقم الهاتف</h3>
                     <p class="text-textMuted dir-ltr">0536330810</p>
                 </a>
 
@@ -551,7 +570,7 @@
                     <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl mb-4 group-hover:bg-primary group-hover:text-dark transition-colors">
                         <i class="fas fa-envelope"></i>
                     </div>
-                    <h3 class="font-cairo font-bold text-lg mb-1">البريد الإلكتروني</h3>
+                    <h3 data-i18n="contact_email_title" class="font-cairo font-bold text-lg mb-1">البريد الإلكتروني</h3>
                     <p class="text-textMuted text-sm">abogithalshbamy@gmail.com</p>
                 </a>
 
@@ -560,8 +579,8 @@
                     <div class="w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center text-green-500 text-xl mb-4 group-hover:bg-green-500 group-hover:text-white transition-colors">
                         <i class="fab fa-whatsapp text-2xl"></i>
                     </div>
-                    <h3 class="font-cairo font-bold text-lg mb-1">واتساب</h3>
-                    <p class="text-textMuted dir-ltr">مراسلة مباشرة</p>
+                    <h3 data-i18n="contact_wa_title" class="font-cairo font-bold text-lg mb-1">واتساب</h3>
+                    <p data-i18n="contact_wa_desc" class="text-textMuted dir-ltr">مراسلة مباشرة</p>
                 </a>
 
             </div>
@@ -575,12 +594,225 @@
                 <a href="https://wa.me/966536330810" class="text-gray-400 hover:text-primary transition-colors text-xl"><i class="fab fa-whatsapp"></i></a>
             </div>
             <p class="text-textMuted text-sm font-tajawal">
-                جميع الحقوق محفوظة &copy; <span id="year"></span> | <span class="font-cairo font-bold text-white">أيمن الشبامي</span>
+                <span data-i18n="footer_rights">جميع الحقوق محفوظة</span> &copy; <span id="year"></span> | <span class="font-cairo font-bold text-white"><span data-i18n="nav_name_first">أيمن</span> <span data-i18n="nav_name_last">الشبامي</span></span>
             </p>
         </div>
     </footer>
 
     <script>
+        // --- Translations Dictionary ---
+        const translations = {
+            ar: {
+                page_title: "أيمن الشبامي | محاسب محترف",
+                nav_name_first: "أيمن",
+                nav_name_last: "الشبامي",
+                nav_home: "الرئيسية",
+                nav_about: "عني",
+                nav_skills: "المهارات",
+                nav_experience: "الخبرات",
+                nav_education: "التعليم",
+                nav_contact: "تواصل معي",
+                hero_badge: "مرحباً بك في ملفي الشخصي 👋",
+                hero_i_am: "أنا ",
+                hero_name: "أيمن الشبامي",
+                hero_subtitle: "محاسب محترف ومسؤول مخازن",
+                hero_desc: "أجمع بين الدقة المحاسبية والإدارة الفعالة للمخزون. أطمح دائماً لتحسين الكفاءة المالية ودعم اتخاذ القرارات الاستراتيجية من خلال تحليل دقيق للبيانات.",
+                hero_btn: "وظفني الآن",
+                hero_card_title: "الكفاءة المالية",
+                hero_card_desc: "دقة، تحليل، وإدارة مستودعات متطورة",
+                hero_badge_1: "دقة عالية",
+                hero_badge_2: "إدارة ERP",
+                about_title_1: "الملخص ",
+                about_title_2: "المهني",
+                about_desc: "محاسب ومسؤول مخازن طموح يتمتع بخبرة عملية في الربط بين الدورة المستندية للمخزون والتسويات المالية. ماهر في استخدام البرامج المحاسبية وأنظمة إدارة المستودعات (ERP) مع قدرة عالية على تنظيم عمليات الجرد الدوري، ومطابقة الفواتير، وضبط كميات المخازن لتقليل الهدر.<br><br>أتميز بالدقة، وسرعة التعلم، والقدرة على تقديم تقارير مالية ومخزنية دقيقة تدعم اتخاذ القرار مع مهارة متقدمة في استخدام الإكسل وبرامج المحاسبة المختلفة.",
+                about_loc_title: "الموقع",
+                about_loc_val: "الرياض، السعودية",
+                about_nat_title: "الجنسية",
+                about_nat_val: "يمني",
+                about_lang_title: "اللغات",
+                about_lang_val: "العربية، الإنجليزية",
+                about_age_title: "سنة الميلاد",
+                skills_title_1: "المهارات ",
+                skills_title_2: "التقنية والعملية",
+                skills_subtitle: "مجموعة من المهارات المكتسبة عبر التجربة العملية والتعليم الأكاديمي لدعم اتخاذ القرار وتقليل الهدر المالي.",
+                skill_1_title: "إعداد التقارير المالية",
+                skill_1_desc: "تجهيز التقارير الدورية بدقة عالية وعمل التسويات البنكية وحسابات الصناديق لدعم الإدارة.",
+                skill_2_title: "إدارة المخزون",
+                skill_2_desc: "مراقبة حركة المخزون، ضمان مطابقة الرصيد الدفتري مع الفعلي، وتقليل الهدر.",
+                skill_3_title: "أنظمة ERP",
+                skill_3_desc: "استخدام البرامج المحاسبية المتنوعة (مثل نظام سماك) في تسجيل العمليات واستخراج البيانات.",
+                skill_4_title: "مايكروسوفت إكسيل",
+                skill_4_desc: "مهارات متقدمة في استخدام Excel لتحليل البيانات المالية، الانحرافات، وعمل التقارير اليومية.",
+                skill_5_title: "إدارة الدائنة والمدينة",
+                skill_5_desc: "إدارة فواتير المبيعات والمشتريات، متابعة المندوبين، وعمل سندات القبض والصرف.",
+                skill_6_title: "المحاسبة الضريبية (VAT)",
+                skill_6_desc: "معرفة قوية في التعامل مع ضريبة القيمة المضافة والتسويات المرتبطة بها والتدقيق والمراجعة.",
+                soft_skills_title: "المهارات الشخصية",
+                soft_1: "الالتزام والعمل بجدية",
+                soft_2: "الاهتمام بالتفاصيل",
+                soft_3: "قدرات تنظيمية عالية",
+                soft_4: "العمل ضمن فريق",
+                soft_5: "القدرة على العمل بشكل منفرد",
+                soft_6: "سرعة التعلم",
+                exp_title_1: "الخبرات ",
+                exp_title_2: "العملية",
+                exp_1_date: "مارس 2026 - حتى الآن",
+                exp_1_role: "أمين مستودع",
+                exp_1_company: "شركة صبا (النجاح) للمخبوزات",
+                exp_1_task_1: "إدارة ومراقبة حركة المخزون وضمان مطابقة الرصيد الدفتري مع الفعلي.",
+                exp_1_task_2: "تنظيم عمليات الاستلام والتسجيل في النظام المحاسبي.",
+                exp_1_task_3: "إعداد تقارير دورية عن حالة المخزون والمواد التالفة لتقليل الهدر.",
+                exp_1_task_4: "عمل فواتير المبيعات والمشتريات ومتابعة المندوبين.",
+                exp_2_date: "يناير 2026 - مارس 2026",
+                exp_2_role: "مساعد محاسب",
+                exp_2_company: "شركة مصنع تمور الرياض",
+                exp_2_task_1: "إدخال القيود اليومية وتسوية الحسابات البنكية بدقة.",
+                exp_2_task_2: "دعم الفريق المالي في إعداد التقارير الشهرية.",
+                exp_2_task_3: "أرشفة المستندات المالية وضمان دقة البيانات المحاسبية.",
+                exp_2_task_4: "إعداد سندات القبض والصرف وعمل الإنتاج اليومي عبر الإكسل.",
+                edu_title_1: "المؤهلات ",
+                edu_title_2: "الأكاديمية",
+                edu_1_degree: "بكالوريوس محاسبة",
+                edu_1_uni: "جامعة العلوم الحديثة",
+                edu_1_loc: "صنعاء، اليمن",
+                edu_2_degree: "دبلوم لغة إنجليزية متوسط",
+                edu_2_uni: "معهد اكسيد",
+                edu_2_loc: "صنعاء، اليمن",
+                contact_title_1: "تواصل ",
+                contact_title_2: "معي",
+                contact_subtitle: "مستعد دائمًا لمناقشة فرص العمل والتعاون المهني.",
+                contact_phone_title: "رقم الهاتف",
+                contact_email_title: "البريد الإلكتروني",
+                contact_wa_title: "واتساب",
+                contact_wa_desc: "مراسلة مباشرة",
+                footer_rights: "جميع الحقوق محفوظة"
+            },
+            en: {
+                page_title: "Ayman Al-Shabami | Pro Accountant",
+                nav_name_first: "Ayman",
+                nav_name_last: "Al-Shabami",
+                nav_home: "Home",
+                nav_about: "About",
+                nav_skills: "Skills",
+                nav_experience: "Experience",
+                nav_education: "Education",
+                nav_contact: "Contact Me",
+                hero_badge: "Welcome to my portfolio 👋",
+                hero_i_am: "I am ",
+                hero_name: "Ayman Al-Shabami",
+                hero_subtitle: "Pro Accountant & Warehouse Manager",
+                hero_desc: "Combining accounting accuracy with effective inventory management. Constantly striving to improve financial efficiency and support strategic decision-making through precise data analysis.",
+                hero_btn: "Hire Me Now",
+                hero_card_title: "Financial Efficiency",
+                hero_card_desc: "Accuracy, analysis, and advanced warehousing",
+                hero_badge_1: "High Accuracy",
+                hero_badge_2: "ERP Management",
+                about_title_1: "Professional ",
+                about_title_2: "Summary",
+                about_desc: "Ambitious Accountant and Warehouse Manager with practical experience linking the inventory document cycle with financial settlements. Skilled in using accounting software and ERP systems, with high capability in organizing periodic inventory, invoice matching, and controlling warehouse quantities to minimize waste.<br><br>Known for accuracy, quick learning, and the ability to provide precise financial and inventory reports that support decision-making, along with advanced proficiency in Excel and various accounting software.",
+                about_loc_title: "Location",
+                about_loc_val: "Riyadh, KSA",
+                about_nat_title: "Nationality",
+                about_nat_val: "Yemeni",
+                about_lang_title: "Languages",
+                about_lang_val: "Arabic, English",
+                about_age_title: "Birth Year",
+                skills_title_1: "Technical & Practical ",
+                skills_title_2: "Skills",
+                skills_subtitle: "A set of skills acquired through practical experience and academic education to support decision-making and reduce financial waste.",
+                skill_1_title: "Financial Reporting",
+                skill_1_desc: "Preparing periodic reports accurately and conducting bank & fund settlements to support management.",
+                skill_2_title: "Inventory Management",
+                skill_2_desc: "Monitoring stock movement, ensuring book and actual balance alignment, and minimizing waste.",
+                skill_3_title: "ERP Systems",
+                skill_3_desc: "Using various accounting software (e.g., SMACC) to record operations and extract data.",
+                skill_4_title: "Microsoft Excel",
+                skill_4_desc: "Advanced skills in Excel for financial data analysis, variances, and daily reporting.",
+                skill_5_title: "Payables & Receivables",
+                skill_5_desc: "Managing sales and purchase invoices, following up with reps, and issuing payment vouchers.",
+                skill_6_title: "Tax Accounting (VAT)",
+                skill_6_desc: "Strong knowledge in handling Value Added Tax, related settlements, auditing, and reviewing.",
+                soft_skills_title: "Soft Skills",
+                soft_1: "Commitment & Hard Work",
+                soft_2: "Attention to Detail",
+                soft_3: "High Organizational Skills",
+                soft_4: "Teamwork",
+                soft_5: "Ability to Work Independently",
+                soft_6: "Quick Learner",
+                exp_title_1: "Professional ",
+                exp_title_2: "Experience",
+                exp_1_date: "Mar 2026 - Present",
+                exp_1_role: "Storekeeper",
+                exp_1_company: "Saba (Al-Najah) Bakeries Co.",
+                exp_1_task_1: "Manage and monitor stock movement ensuring book balance matches actual stock.",
+                exp_1_task_2: "Organize receiving operations and log them into the accounting system.",
+                exp_1_task_3: "Prepare periodic reports on inventory status and damaged goods to minimize waste.",
+                exp_1_task_4: "Issue sales and purchase invoices and follow up with sales representatives.",
+                exp_2_date: "Jan 2026 - Mar 2026",
+                exp_2_role: "Assistant Accountant",
+                exp_2_company: "Riyadh Dates Factory Co.",
+                exp_2_task_1: "Input daily entries and perform accurate bank reconciliations.",
+                exp_2_task_2: "Support the financial team in preparing monthly reports.",
+                exp_2_task_3: "Archive financial documents and ensure accuracy of accounting data.",
+                exp_2_task_4: "Prepare receipt & payment vouchers and log daily production using Excel.",
+                edu_title_1: "Academic ",
+                edu_title_2: "Qualifications",
+                edu_1_degree: "Bachelor of Accounting",
+                edu_1_uni: "University of Modern Sciences",
+                edu_1_loc: "Sanaa, Yemen",
+                edu_2_degree: "Intermediate English Diploma",
+                edu_2_uni: "Exceed Institute",
+                edu_2_loc: "Sanaa, Yemen",
+                contact_title_1: "Contact ",
+                contact_title_2: "Me",
+                contact_subtitle: "Always open to discussing job opportunities and professional collaborations.",
+                contact_phone_title: "Phone Number",
+                contact_email_title: "Email Address",
+                contact_wa_title: "WhatsApp",
+                contact_wa_desc: "Direct Message",
+                footer_rights: "All rights reserved"
+            }
+        };
+
+        // --- Language Switch Logic ---
+        let currentLang = localStorage.getItem('lang') || 'ar';
+        
+        function updateLanguageUI() {
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            
+            // Update Text Nodes
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+
+            // Update Toggle Buttons text
+            const desktopBtn = document.getElementById('lang-toggle-btn');
+            const mobileBtn = document.getElementById('lang-toggle-mobile');
+            if(currentLang === 'ar') {
+                desktopBtn.innerHTML = '<i class="fas fa-globe"></i> English';
+                mobileBtn.innerHTML = 'EN';
+            } else {
+                desktopBtn.innerHTML = '<i class="fas fa-globe"></i> عربي';
+                mobileBtn.innerHTML = 'AR';
+            }
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            localStorage.setItem('lang', currentLang);
+            updateLanguageUI();
+        }
+
+        // Initialize Language on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLanguageUI();
+        });
+
+
         // Update current year in footer
         document.getElementById('year').textContent = new Date().getFullYear();
 
